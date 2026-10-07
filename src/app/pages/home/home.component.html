@@ -1,0 +1,68 @@
+<main>
+  <section class="hero">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1400&h=600&fit=crop&auto=format" alt="Fondo tecnológico">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="inner">
+        <span class="hero-pill"><span class="dot-pulse"></span> Noticias en tiempo real</span>
+        <h1>La tecnología también <span class="accent">se vive</span> en las noticias</h1>
+        <p class="lead">Explora las últimas novedades en tecnología, educación, turismo y mucho más.</p>
+        <form class="search-form" (ngSubmit)="search()">
+          <input type="text" name="q" [(ngModel)]="query" placeholder="Buscar noticias...">
+          <button type="submit">🔍</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="category-strip">
+    <div class="container">
+      @for (c of service.categories(); track c.name) {
+        <a [routerLink]="['/noticias']" [queryParams]="{ categoria: c.name }" class="chip">{{ c.icon }} {{ c.name }}</a>
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2>Noticias destacadas</h2>
+        <p>Las historias más importantes del día</p>
+      </div>
+      <a routerLink="/noticias" class="link-teal">Ver todas →</a>
+    </div>
+    <div class="news-grid">
+      @for (n of featured(); track n.id) {
+        <app-news-card [news]="n" />
+      }
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="section-header">
+      <h2>Más noticias</h2>
+      <a routerLink="/noticias" class="link-teal">Ver todas →</a>
+    </div>
+    <div class="news-grid">
+      @for (n of rest(); track n.id) {
+        <app-news-card [news]="n" />
+      }
+    </div>
+  </section>
+
+  <section class="showcase">
+    <h2>Explora por categoría</h2>
+    <div class="showcase-grid">
+      @for (c of showcase(); track c.name) {
+        <a [routerLink]="['/noticias']" [queryParams]="{ categoria: c.name }" class="showcase-card"
+           [style.border-color]="c.color + '30'" [style.background]="c.color + '08'">
+          <div class="icon">{{ c.icon }}</div>
+          <h3 [style.color]="c.color">{{ c.name }}</h3>
+          <p>{{ c.count }} artículo{{ c.count !== 1 ? 's' : '' }}</p>
+        </a>
+      }
+    </div>
+  </section>
+</main>

@@ -1,0 +1,17 @@
+<article class="news-card">
+  <div class="news-card-img">
+    <img [src]="news().image" [alt]="news().title">
+    <span class="cat-tag" [style.background]="newsService.categoryColor(news().category)">{{ news().category }}</span>
+    <button class="fav-btn" [class.active]="favs.has(news().id)" title="Favorito" (click)="favs.toggle(news().id)">
+      {{ favs.has(news().id) ? '♥' : '♡' }}
+    </button>
+  </div>
+  <div class="news-card-body">
+    <h3>{{ news().title }}</h3>
+    <p>{{ news().excerpt }}</p>
+    <div class="news-card-footer">
+      <span class="date">{{ news().date }}</span>
+      <a class="btn-ver-mas" [routerLink]="['/noticias', news().id]">Ver más →</a>
+    </div>
+  </div>
+</article>

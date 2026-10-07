@@ -1,0 +1,61 @@
+<main class="page-wrap">
+  <a routerLink="/" class="back-link">← Volver al inicio</a>
+  <h1>Noticias</h1>
+  <p class="page-sub">
+    {{ resultado().length }} artículo{{ resultado().length !== 1 ? 's' : '' }} encontrado{{ resultado().length !== 1 ? 's' : '' }}
+  </p>
+
+  <div class="list-layout">
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <h3>Categorías</h3>
+        <div class="search-box">
+          <span class="icon">🔍</span>
+          <input type="text" placeholder="Buscar..." [ngModel]="busqueda()" (ngModelChange)="busqueda.set($event)">
+        </div>
+        <ul class="cat-list">
+          @for (c of sidebar(); track c.name) {
+            <li>
+              <button [class.active]="categoriaActiva() === c.name" (click)="categoriaActiva.set(c.name)">
+                <span>{{ c.icon }} {{ c.name }}</span>
+                <span class="cat-count">{{ c.count }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+    </aside>
+
+    <div class="list-main">
+      <div class="list-toolbar">
+        <p style="font-size:0.9rem;color:var(--texto-secundario);margin:0;">
+          Mostrando <strong>{{ resultado().length }}</strong>
+          {{ categoriaActiva() !== 'Todas' ? 'en ' + categoriaActiva() : 'noticias' }}
+        </p>
+        <div>
+          <label for="selectOrden" style="font-size:0.78rem;color:var(--texto-claro);">Ordenar por:</label>
+          <select id="selectOrden" [ngModel]="orden()" (ngModelChange)="orden.set($event)">
+            <option value="recientes">Más recientes</option>
+            <option value="antiguos">Más antiguos</option>
+            <option value="az">A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      @if (resultado().length === 0) {
+        <div class="empty-state">
+          <div class="emoji">🔍</div>
+          <h3>Sin resultados</h3>
+          <p>No encontramos noticias que coincidan con tu búsqueda.</p>
+          <button class="btn-primary" (click)="limpiarFiltros()">Limpiar filtros</button>
+        </div>
+      } @else {
+        <div class="news-grid">
+          @for (n of resultado(); track n.id) {
+            <app-news-card [news]="n" />
+          }
+        </div>
+      }
+    </div>
+  </div>
+</main>

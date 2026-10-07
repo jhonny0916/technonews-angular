@@ -1,0 +1,41 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a routerLink="/" class="logo">
+      <span class="logo-badge">TN</span>
+      <span>Tecno<span class="accent">News</span></span>
+    </a>
+    <nav class="main-nav">
+      @for (l of links; track l.path) {
+        <a [routerLink]="l.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: l.exact }">
+          {{ l.label }}
+          @if (l.path === '/favoritos' && favs.ids().size > 0) {
+            <span class="badge-count" style="display:inline-flex">{{ favs.ids().size }}</span>
+          }
+        </a>
+      }
+    </nav>
+    <div class="header-actions">
+      @if (authService.isAuthenticated()) {
+        <a routerLink="/admin" class="btn-admin">⚙ Admin</a>
+        <button class="btn-logout" (click)="logout()">🚪 Salir</button>
+      } @else {
+        <a routerLink="/login" class="btn-admin">🔑 Login</a>
+      }
+      <div class="avatar">A</div>
+      <button class="mobile-toggle" aria-label="Abrir menú" (click)="menuOpen.set(!menuOpen())">☰</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="mobile-nav" [class.open]="menuOpen()">
+      @for (l of links; track l.path) {
+        <a [routerLink]="l.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: l.exact }" (click)="menuOpen.set(false)">{{ l.label }}</a>
+      }
+      @if (authService.isAuthenticated()) {
+        <a routerLink="/admin" (click)="menuOpen.set(false)">Panel Admin</a>
+        <button class="mobile-logout" (click)="logout()">🚪 Salir</button>
+      } @else {
+        <a routerLink="/login" (click)="menuOpen.set(false)">🔑 Login Admin</a>
+      }
+    </div>
+  </div>
+</header>

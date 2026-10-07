@@ -1,0 +1,7 @@
+@if (!isAdmin()) {
+  <app-header />
+}
+<router-outlet />
+@if (!isAdmin()) {
+  <app-footer />
+}
